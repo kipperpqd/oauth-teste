@@ -17,9 +17,9 @@
     
     <script>
         // *** 1. CONFIGURAÇÃO ***
-        const SUPABASE_URL = 'https://iwbdytcbpofdzlgcyzam.supabase.co'; 
+        const SUPABASE_URL = 'https://oauth.gp2p.cloud/'; 
         // Substitua pela chave ANÔNIMA (pública) do seu Supabase Studio.
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3YmR5dGNicG9mZHpsZ2N5emFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0MDQzNTIsImV4cCI6MjA4MDk4MDM1Mn0.zQBukaB24goekThzqpjYKeitHIR9y44HtxQsLCxVDgY'; 
+        const SUPABASE_ANON_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2NTM4Njg0MCwiZXhwIjo0OTIxMDYwNDQwLCJyb2xlIjoiYW5vbiJ9.JvU7ykczgMjCDbwAO69Q8gbUQSpFKYvEB6nvyWJhIFI'; 
 
         // Criação do cliente Supabase (Corrigido para evitar ReferenceError)
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
