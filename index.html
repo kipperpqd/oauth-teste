@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste de Login Supabase OAuth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <h1>Supabase OAuth Teste - Google</h1>
+    <p>URL Base do Supabase: https://oauth.gp2p.cloud</p>
+    
+    <div id="auth-status">
+        <p>Carregando status de autenticação...</p>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // *** 1. CONFIGURAÇÃO ***
+        const SUPABASE_URL = 'https://oauth.gp2p.cloud'; 
+        // Substitua pela chave ANÔNIMA (pública) do seu Supabase Studio.
+        const SUPABASE_ANON_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2NTM4Njg0MCwiZXhwIjo0OTIxMDYwNDQwLCJyb2xlIjoiYW5vbiJ9.JvU7ykczgMjCDbwAO69Q8gbUQSpFKYvEB6nvyWJhIFI'; 
+
+        // Criação do cliente Supabase (Corrigido para evitar ReferenceError)
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Função para iniciar o login com Google
+        async function signInWithGoogle() {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    // O redirect_to agora será https://<novo-subdominio>/index.html
+                    redirectTo: window.location.origin + window.location.pathname, 
+                },
+            });
+
+            if (error) {
+                console.error('Erro ao iniciar login:', error.message);
+                document.getElementById('auth-status').innerHTML = `<p style="color:red;">Erro ao iniciar login: ${error.message}</p>`;
+            }
+        }
+
+        // Função para verificar e exibir o estado do usuário
+        async function checkUserStatus() {
+            const statusDiv = document.getElementById('auth-status');
+            const { data: { user } } = await supabaseClient.auth.getUser();
+
+            if (user) {
+                // Usuário logado
+                statusDiv.innerHTML = `
+                    <h2 style="color: green;">✅ Sucesso! Você está logado.</h2>
+                    <p>ID do Usuário (UUID): <strong>${user.id}</strong></p>
+                    <p>Email: <strong>${user.email}</strong></p>
+                    <p>Verifique o banco de dados: uma nova entrada deve existir em <code>auth.users</code> e <code>public.perfis</code>.</p>
+                    <button onclick="signOut()">Sair</button>
+                `;
+            } else {
+                // Usuário não logado
+                statusDiv.innerHTML = `
+                    <h2>🚫 Não Logado.</h2>
+                    <button onclick="signInWithGoogle()">Entrar com Google</button>
+                `;
+            }
+        }
+        
+        // Função para deslogar
+        async function signOut() {
+            await supabaseClient.auth.signOut();
+            window.location.reload(); 
+        }
+
+        // Inicializa a verificação do status do usuário
+        checkUserStatus();
+
+    </script>
+</body>
+</html>
