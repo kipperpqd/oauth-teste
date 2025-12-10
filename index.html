@@ -17,7 +17,7 @@
     
     <script>
         // *** 1. CONFIGURAÇÃO ***
-        const SUPABASE_URL = 'https://iwbdytcbpofdzlgcyzam.supabase.co/auth/v1/callback'; 
+        const SUPABASE_URL = 'https://iwbdytcbpofdzlgcyzam.supabase.co'; 
         // Substitua pela chave ANÔNIMA (pública) do seu Supabase Studio.
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3YmR5dGNicG9mZHpsZ2N5emFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0MDQzNTIsImV4cCI6MjA4MDk4MDM1Mn0.zQBukaB24goekThzqpjYKeitHIR9y44HtxQsLCxVDgY'; 
 
@@ -25,21 +25,7 @@
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Função para iniciar o login com Google
-        async function signInWithGoogle() {
-            const { error } = await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    // O redirect_to agora será https://<novo-subdominio>/index.html
-                    redirectTo: window.location.origin + window.location.pathname, 
-                },
-            });
-
-            if (error) {
-                console.error('Erro ao iniciar login:', error.message);
-                document.getElementById('auth-status').innerHTML = `<p style="color:red;">Erro ao iniciar login: ${error.message}</p>`;
-            }
-        }
-
+        
         // Função para verificar e exibir o estado do usuário
         async function checkUserStatus() {
             const statusDiv = document.getElementById('auth-status');
